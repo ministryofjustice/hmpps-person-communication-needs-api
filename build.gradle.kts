@@ -1,6 +1,8 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "7.1.1"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "7.1.2"
   kotlin("plugin.spring") version "2.1.10"
+  jacoco
+  idea
 }
 
 configurations {
@@ -10,6 +12,7 @@ configurations {
 dependencies {
   implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:1.2.0")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
+
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:1.2.0")

@@ -1,6 +1,6 @@
 generic-service:
   nameOverride: hmpps-person-communication-needs-api
-  productId: "DPS013" # productId for the product that this belongs too, i.e. DPS001, see README.md for details
+  productId: "DPS013"
 
   replicaCount: 4
 
@@ -20,16 +20,15 @@ generic-service:
     SERVER_PORT: "8080"
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.json
 
-  # Pre-existing kubernetes secrets to load as environment variables in the deployment.
-  # namespace_secrets:
-  #   [name of kubernetes secret]:
-  #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
-
   namespace_secrets:
-    hmpps-person-communication-needs-api-client-creds:
-      # Example client registration secrets
-      EXAMPLE_API_CLIENT_ID: "API_CLIENT_ID"
-      EXAMPLE_API_CLIENT_SECRET: "API_CLIENT_SECRET"
+    hmpps-person-communication-needs-api:
+      CLIENT_ID: "CLIENT_ID"
+      CLIENT_SECRET: "CLIENT_SECRET"
+
+    digital-prison-reporting:
+      DPR_USER: "dpr_user"
+      DPR_PASSWORD: "dpr_password"
+
     hmpps-person-communication-needs-api-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
 
