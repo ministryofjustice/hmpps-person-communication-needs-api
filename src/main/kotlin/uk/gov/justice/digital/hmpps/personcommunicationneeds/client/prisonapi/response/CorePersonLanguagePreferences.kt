@@ -1,17 +1,17 @@
-package uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.response
+package uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.response
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "Language Preferences")
 @JsonInclude(NON_NULL)
-data class LanguagePreferencesDto(
+@Schema(description = "Core Person Record Language Preferences")
+data class CorePersonLanguagePreferences(
   @Schema(description = "Preferred spoken language")
-  val preferredSpokenLanguage: ReferenceDataValue? = null,
+  val preferredSpokenLanguage: ReferenceDataCode? = null,
 
   @Schema(description = "Preferred written language")
-  val preferredWrittenLanguage: ReferenceDataValue? = null,
+  val preferredWrittenLanguage: ReferenceDataCode? = null,
 
   @Schema(description = "Is interpreter required", example = "true")
   val interpreterRequired: Boolean,

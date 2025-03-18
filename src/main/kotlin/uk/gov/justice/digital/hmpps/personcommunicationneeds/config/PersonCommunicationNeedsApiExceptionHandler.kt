@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.reactive.function.client.WebClientResponseException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
@@ -59,15 +60,14 @@ class PersonCommunicationNeedsApiExceptionHandler {
       ),
     ).also { log.error("Unexpected exception", e) }
 
+  @ExceptionHandler(WebClientResponseException::class)
+  fun handleException(e: WebClientResponseException): ResponseEntity<ErrorResponse> = ResponseEntity
+    .status(e.statusCode)
+    .body(
+      e.getResponseBodyAs(ErrorResponse::class.java),
+    ).also { log.debug("Exception during call to client {}", e.message) }
+
   private companion object {
     private val log = LoggerFactory.getLogger(this::class.java)
   }
 }
-
-class PersonCommunicationNeedsDataNotFoundException(prisonerNumber: String) : Exception("No data for '$prisonerNumber'")
-class ReferenceDataDomainNotFoundException(code: String) : Exception("No data for domain '$code'")
-class ReferenceDataCodeNotFoundException(code: String, domain: String) : Exception("No data for code '$code' in domain '$domain'")
-
-class GenericNotFoundException(message: String) : Exception(message)
-
-class DownstreamServiceException(message: String, cause: Throwable) : Exception(message, cause)

@@ -2,8 +2,8 @@ package uk.gov.justice.digital.hmpps.personcommunicationneeds.integration.wiremo
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.delete
 import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
 import org.junit.jupiter.api.extension.AfterAllCallback
@@ -26,22 +26,69 @@ internal const val PRISON_API_NOT_FOUND_RESPONSE = """
 internal const val PRISON_API_REFERENCE_CODES = """
               [
                 {
-                  "domain": "TEST",
-                  "code": "ONE",
-                  "description": "Code One",
-                  "activeFlag": "Y",
-                  "listSeq": 99,
-                  "subCodes": []
+                  "domain": "LANG",
+                  "code": "ENG",
+                  "description": "English",
+                  "active": true,
+                  "listSequence": 99
                 },
                 {
-                  "domain": "TEST",
-                  "code": "TWO",
-                  "description": "Code Two",
-                  "activeFlag": "Y",
-                  "listSeq": 99,
-                  "subCodes": []
+                  "domain": "LANG",
+                  "code": "ITA",
+                  "description": "Italian",
+                  "active": true,
+                  "listSequence": 99
                 }
               ]
+            """
+
+internal const val PRISON_API_COMMUNICATION_NEEDS = """
+              {
+                  "prisonerNumber": "$PRISONER_NUMBER",
+                  "languagePreferences": {
+                      "preferredSpokenLanguage": {
+                          "domain": "LANG",
+                          "code": "SPA",
+                          "description": "Spanish; Castilian",
+                          "listSequence": 4,
+                          "active": true,
+                          "primaryKey": {
+                              "domain": "LANG",
+                              "code": "SPA"
+                          }
+                      },
+                      "preferredWrittenLanguage": {
+                          "domain": "LANG",
+                          "code": "ITA",
+                          "description": "Italian",
+                          "listSequence": 4,
+                          "active": true,
+                          "primaryKey": {
+                              "domain": "LANG",
+                              "code": "ITA"
+                          }
+                      },
+                      "interpreterRequired": true
+                  },
+                  "secondaryLanguages": [
+                      {
+                          "language": {
+                              "domain": "LANG",
+                              "code": "ITA",
+                              "description": "Italian",
+                              "listSequence": 4,
+                              "active": true,
+                              "primaryKey": {
+                                  "domain": "LANG",
+                                  "code": "ITA"
+                              }
+                          },
+                          "canRead": true,
+                          "canWrite": true,
+                          "canSpeak": false
+                      }
+                  ]
+              }
             """
 
 class PrisonApiMockServer : WireMockServer(8082) {
@@ -54,7 +101,7 @@ class PrisonApiMockServer : WireMockServer(8082) {
     )
   }
 
-  fun stubReferenceDataCodes(domain: String = "TEST", body: String = PRISON_API_REFERENCE_CODES) {
+  fun stubReferenceDataCodes(domain: String = "LANG", body: String = PRISON_API_REFERENCE_CODES) {
     stubFor(
       get(urlPathMatching("/api/reference-domains/domains/$domain/all-codes")).willReturn(
         aResponse().withHeader("Content-Type", "application/json")
@@ -64,7 +111,53 @@ class PrisonApiMockServer : WireMockServer(8082) {
     )
   }
 
-  // TODO prisonApiClient stubs for communication needs
+  fun stubGetCommunicationNeeds() {
+    val endpoint = "core-person-record/communication-needs"
+    stubOffenderGetEndpoint(endpoint, HttpStatus.OK, PRISONER_NUMBER, PRISON_API_COMMUNICATION_NEEDS.trimIndent())
+    stubOffenderGetEndpoint(endpoint, HttpStatus.INTERNAL_SERVER_ERROR, PRISONER_NUMBER_THROW_EXCEPTION)
+    stubOffenderGetEndpoint(
+      endpoint,
+      HttpStatus.NOT_FOUND,
+      PRISONER_NUMBER_NOT_FOUND,
+      PRISON_API_NOT_FOUND_RESPONSE.trimIndent(),
+    )
+  }
+
+  fun stubUpdateLanguagePreferences() {
+    val endpoint = "core-person-record/language-preferences"
+    stubOffenderPutEndpoint(endpoint, HttpStatus.NO_CONTENT, PRISONER_NUMBER)
+    stubOffenderPutEndpoint(endpoint, HttpStatus.INTERNAL_SERVER_ERROR, PRISONER_NUMBER_THROW_EXCEPTION)
+    stubOffenderPutEndpoint(
+      endpoint,
+      HttpStatus.NOT_FOUND,
+      PRISONER_NUMBER_NOT_FOUND,
+      PRISON_API_NOT_FOUND_RESPONSE.trimIndent(),
+    )
+  }
+
+  fun stubUpdateSecondaryLanguage() {
+    val endpoint = "core-person-record/secondary-language"
+    stubOffenderPutEndpoint(endpoint, HttpStatus.NO_CONTENT, PRISONER_NUMBER)
+    stubOffenderPutEndpoint(endpoint, HttpStatus.INTERNAL_SERVER_ERROR, PRISONER_NUMBER_THROW_EXCEPTION)
+    stubOffenderPutEndpoint(
+      endpoint,
+      HttpStatus.NOT_FOUND,
+      PRISONER_NUMBER_NOT_FOUND,
+      PRISON_API_NOT_FOUND_RESPONSE.trimIndent(),
+    )
+  }
+
+  fun stubDeleteSecondaryLanguage() {
+    val endpoint = "core-person-record/secondary-language/ENG"
+    stubOffenderDeleteEndpoint(endpoint, HttpStatus.NO_CONTENT, PRISONER_NUMBER)
+    stubOffenderDeleteEndpoint(endpoint, HttpStatus.INTERNAL_SERVER_ERROR, PRISONER_NUMBER_THROW_EXCEPTION)
+    stubOffenderDeleteEndpoint(
+      endpoint,
+      HttpStatus.NOT_FOUND,
+      PRISONER_NUMBER_NOT_FOUND,
+      PRISON_API_NOT_FOUND_RESPONSE.trimIndent(),
+    )
+  }
 
   private fun stubOffenderGetEndpoint(
     endpoint: String,
@@ -96,14 +189,14 @@ class PrisonApiMockServer : WireMockServer(8082) {
     )
   }
 
-  private fun stubOffenderPostEndpoint(
+  private fun stubOffenderDeleteEndpoint(
     endpoint: String,
     status: HttpStatus,
     prisonerNumber: String,
     body: String? = null,
   ) {
     stubFor(
-      post(urlPathMatching("/api/offenders/$prisonerNumber/$endpoint")).willReturn(
+      delete(urlPathMatching("/api/offenders/$prisonerNumber/$endpoint")).willReturn(
         aResponse().withHeader("Content-Type", "application/json")
           .withStatus(status.value())
           .withBody(body),
@@ -127,7 +220,10 @@ class PrisonApiExtension :
 
     prisonApi.stubReferenceDataCodes()
 
-    // TODO prisonApi.stubs
+    prisonApi.stubGetCommunicationNeeds()
+    prisonApi.stubUpdateLanguagePreferences()
+    prisonApi.stubUpdateSecondaryLanguage()
+    prisonApi.stubDeleteSecondaryLanguage()
   }
 
   override fun afterAll(context: ExtensionContext): Unit = prisonApi.stop()
