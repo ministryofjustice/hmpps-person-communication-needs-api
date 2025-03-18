@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.response.LanguagePreferencesDto
+import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.request.LanguagePreferencesRequest
+import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.request.SecondaryLanguageRequest
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.service.LanguageInformationService
 import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
@@ -79,8 +80,8 @@ class LanguageInformationResource(private val languageInformationService: Langua
   @PreAuthorize("hasRole('ROLE_COMMUNICATION_NEEDS_API__COMMUNICATION_NEEDS_DATA__RW')")
   fun createOrUpdateLanguagePreferencesByPrisonerNumber(
     @PathVariable prisonerNumber: String,
-    @RequestBody languagePreferencesDto: LanguagePreferencesDto,
-  ): ResponseEntity<Void> = languageInformationService.createOrUpdateLanguagePreferencesByPrisonerNumber(prisonerNumber, languagePreferencesDto)
+    @RequestBody languagePreferencesRequest: LanguagePreferencesRequest,
+  ): ResponseEntity<Void> = languageInformationService.createOrUpdateLanguagePreferencesByPrisonerNumber(prisonerNumber, languagePreferencesRequest)
 
   @PutMapping("/secondary-language")
   @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -137,8 +138,8 @@ class LanguageInformationResource(private val languageInformationService: Langua
   @PreAuthorize("hasRole('ROLE_COMMUNICATION_NEEDS_API__COMMUNICATION_NEEDS_DATA__RW')")
   fun addSecondaryLanguageByPrisonerNumber(
     @PathVariable prisonerNumber: String,
-    @RequestBody languagePreferencesDto: LanguagePreferencesDto,
-  ): ResponseEntity<Void> = languageInformationService.addSecondaryLanguageByPrisonerNumber(prisonerNumber, languagePreferencesDto)
+    @RequestBody secondaryLanguageRequest: SecondaryLanguageRequest,
+  ): ResponseEntity<Void> = languageInformationService.addOrUpdateSecondaryLanguageByPrisonerNumber(prisonerNumber, secondaryLanguageRequest)
 
   @DeleteMapping("/secondary-language/{languageCode}")
   @ResponseStatus(HttpStatus.NO_CONTENT)

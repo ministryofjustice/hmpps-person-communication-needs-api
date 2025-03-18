@@ -7,8 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "Secondary Language")
 @JsonInclude(NON_NULL)
 data class SecondaryLanguageDto(
-  @Schema(description = "Language code", example = "ESP")
-  val languageCode: String? = null,
+  @Schema(description = "Language")
+  val language: ReferenceDataValue? = null,
 
   @Schema(description = "Can read", example = "true")
   val canRead: Boolean,
