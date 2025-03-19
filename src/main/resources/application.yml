@@ -30,8 +30,8 @@ spring:
         registration:
           hmpps-person-communication-needs-api:
             provider: hmpps-auth
-            client-id: ${system.client.id}
-            client-secret: ${system.client.secret}
+            client-id: ${client.id}
+            client-secret: ${client.secret}
             authorization-grant-type: client_credentials
             scope: read
 
