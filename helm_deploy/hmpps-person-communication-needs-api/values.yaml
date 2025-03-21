@@ -25,10 +25,6 @@ generic-service:
       CLIENT_ID: "CLIENT_ID"
       CLIENT_SECRET: "CLIENT_SECRET"
 
-    digital-prison-reporting:
-      DPR_USER: "dpr_user"
-      DPR_PASSWORD: "dpr_password"
-
     hmpps-person-communication-needs-api-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
 
