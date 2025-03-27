@@ -14,5 +14,5 @@ data class LanguagePreferencesDto(
   val preferredWrittenLanguage: ReferenceDataValue? = null,
 
   @Schema(description = "Is interpreter required", example = "true")
-  val interpreterRequired: Boolean,
+  val interpreterRequired: Boolean? = null,
 )
