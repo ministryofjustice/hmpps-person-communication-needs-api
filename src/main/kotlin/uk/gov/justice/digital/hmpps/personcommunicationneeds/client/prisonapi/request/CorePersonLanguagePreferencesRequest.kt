@@ -11,5 +11,5 @@ data class CorePersonLanguagePreferencesRequest(
   val preferredWrittenLanguageCode: String? = null,
 
   @Schema(description = "Is interpreter required", example = "true")
-  val interpreterRequired: Boolean,
+  val interpreterRequired: Boolean? = null,
 )

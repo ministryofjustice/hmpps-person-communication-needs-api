@@ -12,7 +12,7 @@ data class LanguagePreferencesRequest(
   val preferredWrittenLanguageCode: String? = null,
 
   @Schema(description = "Is interpreter required", example = "true")
-  val interpreterRequired: Boolean,
+  val interpreterRequired: Boolean? = null,
 ) {
   fun toCorePersonLanguagePreferencesRequest(): CorePersonLanguagePreferencesRequest = CorePersonLanguagePreferencesRequest(
     preferredSpokenLanguageCode = this.preferredSpokenLanguageCode,
