@@ -9,7 +9,7 @@ import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.respon
 
 class ReferenceDataCodeResourceTest : IntegrationTestBase() {
 
-  @DisplayName("GET /reference-data/domains/{domain}/codes")
+  @DisplayName("GET /v1/reference-data/domains/{domain}/codes")
   @Nested
   inner class GetReferenceDataCodes {
 
@@ -17,14 +17,14 @@ class ReferenceDataCodeResourceTest : IntegrationTestBase() {
     inner class Security {
       @Test
       fun `access forbidden when no authority`() {
-        webTestClient.get().uri("/reference-data/domains/communication-needs/codes")
+        webTestClient.get().uri("/v1/reference-data/domains/LANG/codes")
           .exchange()
           .expectStatus().isUnauthorized
       }
 
       @Test
       fun `access forbidden with wrong role`() {
-        webTestClient.get().uri("/reference-data/domains/communication-needs/codes")
+        webTestClient.get().uri("/v1/reference-data/domains/LANG/codes")
           .headers(setAuthorisation(roles = listOf("ROLE_IS_WRONG")))
           .exchange()
           .expectStatus().isForbidden
@@ -37,7 +37,7 @@ class ReferenceDataCodeResourceTest : IntegrationTestBase() {
       @Test
       fun `can get reference data codes`() {
         val response =
-          webTestClient.get().uri("/reference-data/domains/LANG/codes")
+          webTestClient.get().uri("/v1/reference-data/domains/LANG/codes")
             .headers(setAuthorisation(roles = listOf("ROLE_COMMUNICATION_NEEDS_API__COMMUNICATION_NEEDS_DATA__RW", "ROLE_COMMUNICATION_NEEDS_API__COMMUNICATION_NEEDS_DATA__RO")))
             .exchange()
             .expectStatus().isOk

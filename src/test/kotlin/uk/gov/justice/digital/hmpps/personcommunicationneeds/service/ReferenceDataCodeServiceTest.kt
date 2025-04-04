@@ -37,8 +37,8 @@ class ReferenceDataCodeServiceTest {
   inner class GetReferenceDataCodes {
     private val domain = "LANG"
     private val referenceDataCodes = listOf(
-      ReferenceDataCode("LANG", "ENG", "English", true, 1),
-      ReferenceDataCode("LANG", "ITA", "Italian", true, 2),
+      ReferenceDataCode("LANG", "ENG", "English", "Y", 1),
+      ReferenceDataCode("LANG", "ITA", "Italian", "Y", 2),
     )
     private val referenceDataCodeDtos = listOf(
       ReferenceDataCodeDto("LANG_ENG", "ENG", "English", 1, true),
