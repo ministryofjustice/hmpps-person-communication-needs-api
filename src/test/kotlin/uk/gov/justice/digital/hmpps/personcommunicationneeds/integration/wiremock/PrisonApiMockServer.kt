@@ -29,15 +29,15 @@ internal const val PRISON_API_REFERENCE_CODES = """
                   "domain": "LANG",
                   "code": "ENG",
                   "description": "English",
-                  "active": true,
-                  "listSequence": 99
+                  "activeFlag": "Y",
+                  "listSeq": 99
                 },
                 {
                   "domain": "LANG",
                   "code": "ITA",
                   "description": "Italian",
-                  "active": true,
-                  "listSequence": 99
+                  "activeFlag": "Y",
+                  "listSeq": 99
                 }
               ]
             """

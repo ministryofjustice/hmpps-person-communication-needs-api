@@ -22,7 +22,7 @@ import uk.gov.justice.hmpps.kotlin.common.ErrorResponse
 
 @RestController
 @Tag(name = "Reference Data Controller V1", description = "Reference Data Codes for Person Communication Needs data")
-@RequestMapping("/reference-data/domains/{domain}/codes", produces = [MediaType.APPLICATION_JSON_VALUE])
+@RequestMapping("/v1/reference-data/domains/{domain}/codes", produces = [MediaType.APPLICATION_JSON_VALUE])
 class ReferenceDataCodeResource(
   private val referenceDataCodeService: ReferenceDataCodeService,
 ) {

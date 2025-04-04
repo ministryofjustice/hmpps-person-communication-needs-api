@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "Secondary language information")
 data class CorePersonSecondaryLanguage(
   @Schema(description = "Language reference code")
-  val language: ReferenceDataCode,
+  val language: ReferenceCode,
 
   @Schema(description = "Reading proficiency")
   val canRead: Boolean,

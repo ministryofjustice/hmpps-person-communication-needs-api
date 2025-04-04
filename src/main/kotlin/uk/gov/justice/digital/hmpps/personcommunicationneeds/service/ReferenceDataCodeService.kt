@@ -19,8 +19,10 @@ class ReferenceDataCodeService(
             "${domain}_${it.code}",
             it.code,
             it.description,
-            it.listSequence,
-            it.active,
+            it.listSeq,
+            it.activeFlag == "Y",
+            it.parentCode,
+            it.parentDomain,
           )
         }
         ?.sortedBy { it.listSequence }

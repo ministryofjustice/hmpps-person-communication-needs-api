@@ -19,7 +19,7 @@ import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.Pr
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.response.CorePersonCommunicationNeeds
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.response.CorePersonLanguagePreferences
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.response.CorePersonSecondaryLanguage
-import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.response.ReferenceDataCode
+import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.response.ReferenceCode
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.response.LanguagePreferencesDto
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.response.PersonCommunicationNeedsDto
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.resource.dto.response.ReferenceDataValue
@@ -45,13 +45,13 @@ class CommunicationNeedsServiceTest {
     private val corePersonCommunicationNeeds = CorePersonCommunicationNeeds(
       prisonerNumber = prisonerNumber,
       languagePreferences = CorePersonLanguagePreferences(
-        preferredSpokenLanguage = ReferenceDataCode("LANG", "ENG", "English", true, 99),
-        preferredWrittenLanguage = ReferenceDataCode("LANG", "ITA", "Italian", true, 99),
+        preferredSpokenLanguage = ReferenceCode("LANG", "ENG", "English", true, 99),
+        preferredWrittenLanguage = ReferenceCode("LANG", "ITA", "Italian", true, 99),
         interpreterRequired = true,
       ),
       secondaryLanguages = listOf(
         CorePersonSecondaryLanguage(
-          language = ReferenceDataCode("LANG", "ITA", "Italian", true, 99),
+          language = ReferenceCode("LANG", "ITA", "Italian", true, 99),
           canSpeak = false,
           canRead = true,
           canWrite = true,

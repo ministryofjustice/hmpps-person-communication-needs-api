@@ -8,10 +8,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(description = "Core Person Record Language Preferences")
 data class CorePersonLanguagePreferences(
   @Schema(description = "Preferred spoken language")
-  val preferredSpokenLanguage: ReferenceDataCode? = null,
+  val preferredSpokenLanguage: ReferenceCode? = null,
 
   @Schema(description = "Preferred written language")
-  val preferredWrittenLanguage: ReferenceDataCode? = null,
+  val preferredWrittenLanguage: ReferenceCode? = null,
 
   @Schema(description = "Is interpreter required", example = "true")
   val interpreterRequired: Boolean? = null,
