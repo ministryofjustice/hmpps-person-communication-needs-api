@@ -4,25 +4,22 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.DependsOn
-import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService
 import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient
 import org.springframework.security.oauth2.client.endpoint.OAuth2ClientCredentialsGrantRequest
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction
 import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClient.Builder
 import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory
-import reactor.netty.http.client.HttpClient
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.PrisonApiClient
 import uk.gov.justice.digital.hmpps.personcommunicationneeds.client.prisonapi.ReferenceDataClient
+import uk.gov.justice.hmpps.kotlin.auth.authorisedWebClient
 import uk.gov.justice.hmpps.kotlin.auth.healthWebClient
 import java.time.Duration
 
@@ -45,12 +42,12 @@ class WebClientConfiguration(
   @RequestScope
   fun prisonApiWebClient(
     clientRegistrationRepository: ClientRegistrationRepository,
+    oAuth2AuthorizedClientService: OAuth2AuthorizedClientService,
     builder: WebClient.Builder,
-  ): WebClient = getOAuthWebClient(
-    authorizedClientManagerUserEnhanced(clientRegistrationRepository),
-    builder,
-    prisonApiBaseUri,
+  ): WebClient = builder.authorisedWebClient(
+    authorizedClientManagerUserEnhanced(clientRegistrationRepository, oAuth2AuthorizedClientService),
     "hmpps-person-communication-needs-api",
+    prisonApiBaseUri,
     prisonApiTimeout,
   )
 
@@ -74,9 +71,8 @@ class WebClientConfiguration(
     return client
   }
 
-  private fun authorizedClientManagerUserEnhanced(clients: ClientRegistrationRepository?): OAuth2AuthorizedClientManager {
-    val service: OAuth2AuthorizedClientService = InMemoryOAuth2AuthorizedClientService(clients)
-    val manager = AuthorizedClientServiceOAuth2AuthorizedClientManager(clients, service)
+  private fun authorizedClientManagerUserEnhanced(clients: ClientRegistrationRepository?, clientService: OAuth2AuthorizedClientService): OAuth2AuthorizedClientManager {
+    val manager = AuthorizedClientServiceOAuth2AuthorizedClientManager(clients, clientService)
 
     val defaultClientCredentialsTokenResponseClient = DefaultClientCredentialsTokenResponseClient()
     val authentication = SecurityContextHolder.getContext().authentication
@@ -95,22 +91,5 @@ class WebClientConfiguration(
 
     manager.setAuthorizedClientProvider(authorizedClientProvider)
     return manager
-  }
-
-  private fun getOAuthWebClient(
-    authorizedClientManager: OAuth2AuthorizedClientManager,
-    builder: WebClient.Builder,
-    rootUri: String,
-    registrationId: String,
-    timout: Duration,
-  ): WebClient {
-    val oauth2Client = ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
-    oauth2Client.setDefaultClientRegistrationId(registrationId)
-
-    return builder
-      .baseUrl(rootUri)
-      .clientConnector(ReactorClientHttpConnector(HttpClient.create().responseTimeout(timout)))
-      .apply(oauth2Client.oauth2Configuration())
-      .build()
   }
 }
