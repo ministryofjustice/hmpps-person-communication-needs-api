@@ -169,8 +169,6 @@ class LanguageInformationResourceTest : IntegrationTestBase() {
           .expectStatus().isNotFound
       }
     }
-
-
   }
 
   @Nested
