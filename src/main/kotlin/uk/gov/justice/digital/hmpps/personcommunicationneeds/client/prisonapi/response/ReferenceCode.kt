@@ -6,8 +6,8 @@ data class ReferenceCode(
   val domain: String,
   val code: String,
   val description: String,
-  val active: Boolean,
-  val listSequence: Int,
+  val active: Boolean?,
+  val listSequence: Int?,
 ) {
   fun toReferenceDataValue(): ReferenceDataValue = ReferenceDataValue(
     id = "${domain}_$code",
