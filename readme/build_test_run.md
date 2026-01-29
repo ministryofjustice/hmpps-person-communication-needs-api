@@ -70,8 +70,8 @@ In order to run against deployed dependencies in dev the
 Note, client credentials from the dev namespace (hmpps-person-communication-needs-api-dev) kubernetes secrets.
 
 ```
-SYSTEM_CLIENT_ID=<Extract from k8s namespace>
-SYSTEM_CLIENT_SECRET=<Extract from k8s namespace>
+CLIENT_ID=<Extract from k8s namespace>
+CLIENT_SECRET=<Extract from k8s namespace>
 HMPPS_AUTH_URL=https://sign-in-dev.hmpps.service.justice.gov.uk/auth
 PRISON_API_BASE_URL=https://prison-api-dev.prison.service.justice.gov.uk
 ```
