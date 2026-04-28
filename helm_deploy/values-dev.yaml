@@ -11,6 +11,8 @@ generic-service:
     APPLICATIONINSIGHTS_CONFIGURATION_FILE: "applicationinsights.dev.json"
     HMPPS_AUTH_URL: "https://sign-in-dev.hmpps.service.justice.gov.uk/auth"
     PRISON_API_BASE_URL: "https://prison-api-dev.prison.service.justice.gov.uk"
+    SPRINGDOC_API_DOCS_ENABLED: "true"
+    SPRINGDOC_SWAGGER_UI_ENABLED: "true"
 
   scheduledDowntime:
     enabled: true
