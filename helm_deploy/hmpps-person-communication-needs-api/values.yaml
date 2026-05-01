@@ -24,6 +24,7 @@ generic-service:
     hmpps-person-communication-needs-api:
       CLIENT_ID: "CLIENT_ID"
       CLIENT_SECRET: "CLIENT_SECRET"
+      SENTRY_DSN: "SENTRY_DSN"
 
     hmpps-person-communication-needs-api-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
