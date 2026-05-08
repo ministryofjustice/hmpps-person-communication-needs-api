@@ -20,7 +20,7 @@ dependencies {
   implementation("io.sentry:sentry-spring-boot-4:8.40.0")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
   constraints {
-    implementation("org.webjars:swagger-ui:5.32.5")
+    implementation("org.webjars:swagger-ui:5.32.2")
   }
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:2.2.0")
