@@ -12,6 +12,10 @@ configurations {
   testImplementation { exclude(group = "org.junit.vintage") }
 }
 
+dependencyCheck {
+  suppressionFiles.add("azure-dependency-check-suppress.xml")
+}
+
 dependencies {
   implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:2.3.0")
   implementation("org.springframework.boot:spring-boot-starter-jackson")
