@@ -1,7 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.4"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.5"
   kotlin("jvm") version "2.4.10"
   kotlin("plugin.spring") version "2.4.10"
   jacoco
@@ -21,7 +19,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jackson")
   implementation("org.springframework.boot:spring-boot-starter-webclient")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
-  implementation("io.sentry:sentry-spring-boot-4:8.52.0")
+  implementation("io.sentry:sentry-spring-boot-4:8.53.0")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
   constraints {
     implementation("org.webjars:swagger-ui:5.32.2")
@@ -39,12 +37,8 @@ dependencies {
 
 kotlin {
   jvmToolchain(25)
-}
-
-tasks {
-  withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    compilerOptions {
-      jvmTarget = JvmTarget.JVM_25
-    }
+  compilerOptions {
+    freeCompilerArgs.add("-Xcollection-literals")
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_25)
   }
 }
