@@ -21,9 +21,6 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("io.sentry:sentry-spring-boot-4:8.54.0")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
-  constraints {
-    implementation("org.webjars:swagger-ui:5.32.11")
-  }
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:3.0.1")
   testImplementation("org.springframework.boot:spring-boot-starter-jackson-test")
