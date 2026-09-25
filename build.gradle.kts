@@ -1,5 +1,5 @@
 plugins {
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.9"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "11.0.10"
   kotlin("jvm") version "2.4.20"
   kotlin("plugin.spring") version "2.4.20"
   jacoco
@@ -19,7 +19,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-jackson")
   implementation("org.springframework.boot:spring-boot-starter-webclient")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
-  implementation("io.sentry:sentry-spring-boot-4:8.57.0")
+  implementation("io.sentry:sentry-spring-boot-4:8.58.0")
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1")
 
   testImplementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter-test:3.0.2")
